@@ -6,6 +6,7 @@ data_NP300_path = 'Donnees8/ref_NP300'
 load(data_P300_path)
 load(data_NP300_path)
 %% DATA ANALYSIS
+%Histograms - P300
 figure(1)
 nbins = 30
 histogram(ref_P300(:,1),nbins)
@@ -16,15 +17,17 @@ histogram(ref_P300(:,3),nbins)
 hold on
 histogram(ref_P300(:,4),nbins)
 legend('E1','E2','E3','E4')
-title('P300')
+title('P300 Histogram')
 hold off
 
+%Plotting electrode signals - P300
 figure(2)
 t = 0:length(ref_P300)-1;
 plot(t,ref_P300(:,1),t,ref_P300(:,2),t,ref_P300(:,3),t,ref_P300(:,4));
 legend('E1','E2','E3','E4')
-title('P300')
+title('P300 Signals')
 
+%Histograms - NP300
 figure(3)
 nbins = 30
 histogram(ref_NP300(:,1),nbins)
@@ -35,14 +38,15 @@ histogram(ref_NP300(:,3),nbins)
 hold on
 histogram(ref_NP300(:,4),nbins)
 legend('E1','E2','E3','E4')
-title('NP300')
+title('NP300 Histogram')
 hold off
 
+%Plotting electrode signals - NP300
 figure(4)
 t = 0:length(ref_NP300)-1;
 plot(t,ref_NP300(:,1),t,ref_NP300(:,2),t,ref_NP300(:,3),t,ref_NP300(:,4));
 legend('E1','E2','E3','E4')
-title('NP300')
+title('NP300 Signals')
 
 %Correlation - P300
 corr_E1_E2_P300 = corr(ref_P300(:,1),ref_P300(:,2));
@@ -58,6 +62,64 @@ corr_E1_E4_NP300 = corr(ref_NP300(:,1),ref_NP300(:,4));
 corr_E2_E3_NP300 = corr(ref_NP300(:,2),ref_NP300(:,3));
 corr_E2_E4_NP300 = corr(ref_NP300(:,2),ref_NP300(:,4));
 corr_E3_E4_NP300 = corr(ref_NP300(:,3),ref_NP300(:,4));
+
+%Autocorrelation - P300
+autocorrP300 = [xcorr(ref_P300(:,1),ref_P300(:,1)) xcorr(ref_P300(:,2),ref_P300(:,2)) xcorr(ref_P300(:,3),ref_P300(:,3)) xcorr(ref_P300(:,4),ref_P300(:,4))]
+t = 0:1:length(autocorrP300)-1;
+
+figure(5)
+plot(t,autocorrP300);
+legend('E1','E2','E3','E4')
+title('P300 All Signals Autocorrelated')
+
+figure(6)
+plot(t,autocorrP300(:,1));
+legend('E1')
+title('P300 E1 Signal Autocorrelated')
+
+figure(7)
+plot(t,autocorrP300(:,2));
+legend('E2')
+title('P300 E2 Signal Autocorrelated')
+
+figure(8)
+plot(t,autocorrP300(:,3));
+legend('E3')
+title('P300 E3 Signal Autocorrelated')
+
+figure(9)
+plot(t,autocorrP300(:,4));
+legend('E4')
+title('P300 E4 Signal Autocorrelated')
+
+%Autocorrelation - P300
+autocorrNP300 = [xcorr(ref_NP300(:,1),ref_NP300(:,1)) xcorr(ref_NP300(:,2),ref_NP300(:,2)) xcorr(ref_NP300(:,3),ref_NP300(:,3)) xcorr(ref_NP300(:,4),ref_NP300(:,4))]
+t = 0:1:length(autocorrNP300)-1;
+
+figure(10)
+plot(t,autocorrNP300);
+legend('E1','E2','E3','E4')
+title('NP300 All Signals Autocorrelated')
+
+figure(11)
+plot(t,autocorrNP300(:,1));
+legend('E1')
+title('NP300 E1 Signal Autocorrelated')
+
+figure(12)
+plot(t,autocorrNP300(:,2));
+legend('E2')
+title('NP300 E2 Signal Autocorrelated')
+
+figure(13)
+plot(t,autocorrNP300(:,3));
+legend('E3')
+title('NP300 E3 Signal Autocorrelated')
+
+figure(14)
+plot(t,autocorrNP300(:,4));
+legend('E4')
+title('NP300 E4 Signal Autocorrelated')
 
 %Mean - P300
 mean_E1_P300 = sum(ref_P300(:,1))/length(ref_P300(:,1));
