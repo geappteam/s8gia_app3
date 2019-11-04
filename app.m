@@ -1,14 +1,15 @@
+clc
 close all
 clear all
 %% LOAD DATA
-data_P300_path = 'Donnees8/ref_P300'
-data_NP300_path = 'Donnees8/ref_NP300'
-load(data_P300_path)
-load(data_NP300_path)
+data_P300_path = 'Donnees8/ref_P300';
+data_NP300_path = 'Donnees8/ref_NP300';
+load(data_P300_path);
+load(data_NP300_path);
 %% DATA ANALYSIS
-%Histograms - P300
+%% Histograms - P300
 figure(1)
-nbins = 30
+nbins = 30;
 histogram(ref_P300(:,1),nbins)
 hold on
 histogram(ref_P300(:,2),nbins)
@@ -20,16 +21,16 @@ legend('E1','E2','E3','E4')
 title('P300 Histogram')
 hold off
 
-%Plotting electrode signals - P300
+%% Plotting electrode signals - P300
 figure(2)
 t = 0:length(ref_P300)-1;
 plot(t,ref_P300(:,1),t,ref_P300(:,2),t,ref_P300(:,3),t,ref_P300(:,4));
 legend('E1','E2','E3','E4')
 title('P300 Signals')
 
-%Histograms - NP300
+%% Histograms - NP300
 figure(3)
-nbins = 30
+nbins = 30;
 histogram(ref_NP300(:,1),nbins)
 hold on
 histogram(ref_NP300(:,2),nbins)
@@ -41,21 +42,21 @@ legend('E1','E2','E3','E4')
 title('NP300 Histogram')
 hold off
 
-%Plotting electrode signals - NP300
+%% Plotting electrode signals - NP300
 figure(4)
 t = 0:length(ref_NP300)-1;
 plot(t,ref_NP300(:,1),t,ref_NP300(:,2),t,ref_NP300(:,3),t,ref_NP300(:,4));
 legend('E1','E2','E3','E4')
 title('NP300 Signals')
 
-%Correlation - P300
+%% Correlation - P300
 corr_E1_E2_P300 = corr(ref_P300(:,1),ref_P300(:,2));
 corr_E1_E3_P300 = corr(ref_P300(:,1),ref_P300(:,3));
 corr_E1_E4_P300 = corr(ref_P300(:,1),ref_P300(:,4));
 corr_E2_E3_P300 = corr(ref_P300(:,2),ref_P300(:,3));
 corr_E2_E4_P300 = corr(ref_P300(:,2),ref_P300(:,4));
 corr_E3_E4_P300 = corr(ref_P300(:,3),ref_P300(:,4));
-%Correlation - NP300
+%% Correlation - NP300
 corr_E1_E2_NP300 = corr(ref_NP300(:,1),ref_NP300(:,2));
 corr_E1_E3_NP300 = corr(ref_NP300(:,1),ref_NP300(:,3));
 corr_E1_E4_NP300 = corr(ref_NP300(:,1),ref_NP300(:,4));
@@ -63,8 +64,8 @@ corr_E2_E3_NP300 = corr(ref_NP300(:,2),ref_NP300(:,3));
 corr_E2_E4_NP300 = corr(ref_NP300(:,2),ref_NP300(:,4));
 corr_E3_E4_NP300 = corr(ref_NP300(:,3),ref_NP300(:,4));
 
-%Autocorrelation - P300
-autocorrP300 = [xcorr(ref_P300(:,1),ref_P300(:,1)) xcorr(ref_P300(:,2),ref_P300(:,2)) xcorr(ref_P300(:,3),ref_P300(:,3)) xcorr(ref_P300(:,4),ref_P300(:,4))]
+%% Autocorrelation - P300
+autocorrP300 = [xcorr(ref_P300(:,1),ref_P300(:,1)) xcorr(ref_P300(:,2),ref_P300(:,2)) xcorr(ref_P300(:,3),ref_P300(:,3)) xcorr(ref_P300(:,4),ref_P300(:,4))];
 t = 0:1:length(autocorrP300)-1;
 
 figure(5)
@@ -92,7 +93,7 @@ plot(t,autocorrP300(:,4));
 legend('E4')
 title('P300 E4 Signal Autocorrelated')
 
-%Autocorrelation - P300
+%% Autocorrelation - NP300
 autocorrNP300 = [xcorr(ref_NP300(:,1),ref_NP300(:,1)) xcorr(ref_NP300(:,2),ref_NP300(:,2)) xcorr(ref_NP300(:,3),ref_NP300(:,3)) xcorr(ref_NP300(:,4),ref_NP300(:,4))]
 t = 0:1:length(autocorrNP300)-1;
 
@@ -121,7 +122,56 @@ plot(t,autocorrNP300(:,4));
 legend('E4')
 title('NP300 E4 Signal Autocorrelated')
 
-%Mean - P300
+%% Plot Distribution 4D - P300
+figure(15)
+scatter3(ref_P300(:,1),ref_P300(:,2),ref_P300(:,3),30,ref_P300(:,4),'filled')
+xlabel('E1')
+ylabel('E2')
+zlabel('E3')
+cb = colorbar;                  
+cb.Label.String = 'E4';
+title('P300 Distribution')
+
+%% Plot Distribution 4D - NP300
+figure(16)
+scatter3(ref_NP300(:,1),ref_NP300(:,2),ref_NP300(:,3),30,ref_NP300(:,4),'filled')
+xlabel('E1')
+ylabel('E2')
+zlabel('E3')
+cb = colorbar;                  
+cb.Label.String = 'E4';
+title('NP300 Distribution')
+
+%% Plot Distribution 4D - P300 And NP300
+% figure(17)
+% E1 = cat(1,ref_P300(:,1),ref_NP300(:,1));
+% E2 = cat(1,ref_P300(:,2),ref_NP300(:,2));
+% E3 = cat(1,ref_P300(:,3),ref_NP300(:,3));
+% E4 = cat(1,ref_P300(:,4),ref_NP300(:,4));
+% scatter3(E1,E2,E3,30,E4,'filled')
+% xlabel('E1')
+% ylabel('E2')
+% zlabel('E3')
+% cb = colorbar;                  
+% cb.Label.String = 'E4';
+% title('P300 And NP300 Distribution')
+
+figure(17)
+hold on
+hP300 = scatter3(ref_P300(:,1),ref_P300(:,2),ref_P300(:,3),30,ref_P300(:,4),'filled','o','MarkerEdgeColor',[1 0 0],'LineWidth',2)
+hNP300 = scatter3(ref_NP300(:,1),ref_NP300(:,2),ref_NP300(:,3),50,ref_NP300(:,4),'filled','s','MarkerEdgeColor',[0 0 0])
+% h.P300.MarkerEdgeColor = [1 0 0];
+% h.NP300.MarkerEdgeColor = [0 1 0];
+xlabel('E1')
+ylabel('E2')
+zlabel('E3')
+cb = colorbar;                  
+cb.Label.String = 'E4';
+title('P300 And NP300 Distribution')
+legend('P300','NP300')
+hold off
+
+%% Mean - P300
 mean_E1_P300 = sum(ref_P300(:,1))/length(ref_P300(:,1));
 mean_E2_P300 = sum(ref_P300(:,2))/length(ref_P300(:,2));
 mean_E3_P300 = sum(ref_P300(:,3))/length(ref_P300(:,3));
@@ -129,7 +179,7 @@ mean_E4_P300 = sum(ref_P300(:,4))/length(ref_P300(:,4));
 
 mP300 = [mean_E1_P300; mean_E2_P300; mean_E3_P300; mean_E4_P300];
 
-%Mean - NP300
+%% Mean - NP300
 mean_E1_NP300 = sum(ref_NP300(:,1))/length(ref_NP300(:,1));
 mean_E2_NP300 = sum(ref_NP300(:,2))/length(ref_NP300(:,2));
 mean_E3_NP300 = sum(ref_NP300(:,3))/length(ref_NP300(:,3));
@@ -137,7 +187,7 @@ mean_E4_NP300 = sum(ref_NP300(:,4))/length(ref_NP300(:,4));
 
 mNP300 = [mean_E1_NP300; mean_E2_NP300; mean_E3_NP300; mean_E4_NP300];
 
-%Covariance - P300
+%% Covariance - P300
 ctmpE11 = [ref_P300(:,1) - mP300(1) ref_P300(:,1) - mP300(1)];
 ctmpE12 = [ref_P300(:,1) - mP300(1) ref_P300(:,2) - mP300(2)];
 ctmpE13 = [ref_P300(:,1) - mP300(1) ref_P300(:,3) - mP300(3)];
