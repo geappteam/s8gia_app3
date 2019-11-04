@@ -143,30 +143,15 @@ cb.Label.String = 'E4';
 title('NP300 Distribution')
 
 %% Plot Distribution 4D - P300 And NP300
-% figure(17)
-% E1 = cat(1,ref_P300(:,1),ref_NP300(:,1));
-% E2 = cat(1,ref_P300(:,2),ref_NP300(:,2));
-% E3 = cat(1,ref_P300(:,3),ref_NP300(:,3));
-% E4 = cat(1,ref_P300(:,4),ref_NP300(:,4));
-% scatter3(E1,E2,E3,30,E4,'filled')
-% xlabel('E1')
-% ylabel('E2')
-% zlabel('E3')
-% cb = colorbar;                  
-% cb.Label.String = 'E4';
-% title('P300 And NP300 Distribution')
-
 figure(17)
 hold on
-hP300 = scatter3(ref_P300(:,1),ref_P300(:,2),ref_P300(:,3),30,ref_P300(:,4),'filled','o','MarkerEdgeColor',[1 0 0],'LineWidth',2)
-hNP300 = scatter3(ref_NP300(:,1),ref_NP300(:,2),ref_NP300(:,3),50,ref_NP300(:,4),'filled','s','MarkerEdgeColor',[0 0 0])
-% h.P300.MarkerEdgeColor = [1 0 0];
-% h.NP300.MarkerEdgeColor = [0 1 0];
+hP300 = scatter3(ref_P300(:,1),ref_P300(:,2),ref_P300(:,4),30,ref_P300(:,3),'filled','o','MarkerEdgeColor',[1 0 0],'LineWidth',2)
+hNP300 = scatter3(ref_NP300(:,1),ref_NP300(:,2),ref_NP300(:,4),50,ref_NP300(:,3),'filled','s','MarkerEdgeColor',[0 0 0])
 xlabel('E1')
 ylabel('E2')
-zlabel('E3')
+zlabel('E4')
 cb = colorbar;                  
-cb.Label.String = 'E4';
+cb.Label.String = 'E3';
 title('P300 And NP300 Distribution')
 legend('P300','NP300')
 hold off
