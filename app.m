@@ -299,8 +299,6 @@ Co = [CoE11 CoE12 CoE13 CoE14 ; CoE21 CoE22 CoE23 CoE24; CoE31 CoE32 CoE33 CoE34
 
 % Eigenvalues and eigenvectors
 syms lenda
-eqn = det(Co - lenda * eye(size(Co))) == 0;
-eigen_values = solve(eqn,lenda);
-eigen_values = vpa(eigen_values,6)
-
+eqn = det(Co - lenda * eye(size(Co))) == 0
+eigen_values = vpasolve(eqn,lenda)
 
