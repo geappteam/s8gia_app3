@@ -161,8 +161,8 @@ hold off
 % E3 Colored 
 figure(18)
 hold on
-hP300 = scatter3(ref_P300(:,4),ref_P300(:,1),ref_P300(:,2),30,ref_P300(:,3),'filled','o','MarkerEdgeColor',[1 0 0],'LineWidth',2)
-hNP300 = scatter3(ref_NP300(:,4),ref_NP300(:,1),ref_NP300(:,2),50,ref_NP300(:,3),'filled','s','MarkerEdgeColor',[0 0 0])
+hP300 = scatter3(ref_P300(:,4),ref_P300(:,1),ref_P300(:,2),30,ref_P300(:,3),'filled','o','MarkerEdgeColor',[1 0 0],'LineWidth',2);
+hNP300 = scatter3(ref_NP300(:,4),ref_NP300(:,1),ref_NP300(:,2),50,ref_NP300(:,3),'filled','s','MarkerEdgeColor',[0 0 0]);
 xlabel('E4')
 ylabel('E1')
 zlabel('E2')
@@ -176,8 +176,8 @@ hold off
 % E2 Colored 
 figure(19)
 hold on
-hP300 = scatter3(ref_P300(:,3),ref_P300(:,4),ref_P300(:,1),30,ref_P300(:,2),'filled','o','MarkerEdgeColor',[1 0 0],'LineWidth',2)
-hNP300 = scatter3(ref_NP300(:,3),ref_NP300(:,4),ref_NP300(:,1),50,ref_NP300(:,2),'filled','s','MarkerEdgeColor',[0 0 0])
+hP300 = scatter3(ref_P300(:,3),ref_P300(:,4),ref_P300(:,1),30,ref_P300(:,2),'filled','o','MarkerEdgeColor',[1 0 0],'LineWidth',2);
+hNP300 = scatter3(ref_NP300(:,3),ref_NP300(:,4),ref_NP300(:,1),50,ref_NP300(:,2),'filled','s','MarkerEdgeColor',[0 0 0]);
 xlabel('E3')
 ylabel('E4')
 zlabel('E1')
@@ -191,8 +191,8 @@ hold off
 % E1 Colored 
 figure(20)
 hold on
-hP300 = scatter3(ref_P300(:,2),ref_P300(:,3),ref_P300(:,4),30,ref_P300(:,1),'filled','o','MarkerEdgeColor',[1 0 0],'LineWidth',2)
-hNP300 = scatter3(ref_NP300(:,2),ref_NP300(:,3),ref_NP300(:,4),50,ref_NP300(:,1),'filled','s','MarkerEdgeColor',[0 0 0])
+hP300 = scatter3(ref_P300(:,2),ref_P300(:,3),ref_P300(:,4),30,ref_P300(:,1),'filled','o','MarkerEdgeColor',[1 0 0],'LineWidth',2);
+hNP300 = scatter3(ref_NP300(:,2),ref_NP300(:,3),ref_NP300(:,4),50,ref_NP300(:,1),'filled','s','MarkerEdgeColor',[0 0 0]);
 xlabel('E2')
 ylabel('E3')
 zlabel('E4')
@@ -297,8 +297,24 @@ CoE44 = (ctmpE44(:,1)' * ctmpE44(:,2)) / (length(ctmpE44)-1);
 
 Co = [CoE11 CoE12 CoE13 CoE14 ; CoE21 CoE22 CoE23 CoE24; CoE31 CoE32 CoE33 CoE34; CoE41 CoE42 CoE43 CoE44];
 
-% Eigenvalues and eigenvectors
+% PCA
+coeffPCA_ref_P300 = pca(ref_P300,'Algorithm','eig','Rows','all')
+coeffPCA_ref_NP300 = pca(ref_NP300,'Algorithm','eig','Rows','all')
+
+% Eigenvalues
 syms lenda
-eqn = det(Co - lenda * eye(size(Co))) == 0
-eigen_values = vpasolve(eqn,lenda)
+eqn1 = det(Co - lenda * eye(size(Co))) == 0;
+eigen_values = vpasolve(eqn1,lenda);
+
+% % Eigenvectors (*tried without eig() Matlab's function : Failure)
+% eigen_vectors = zeros(size(Co));
+% for i = 1:length(eigen_values)
+%     syms a b c d
+%     u = [a b c d]';
+%     eqns = (Co - eigen_values(i) * eye(size(Co))) * u == 0;
+%     S = solve(eqns, [a;b;c;d],'Real',true);
+%     eigen_vectors(:,i) = [S.a; S.b; S.c; S.d]'
+% end
+[eigen_vectors,Diag_eigen_values] = eig(Co);
+
 
