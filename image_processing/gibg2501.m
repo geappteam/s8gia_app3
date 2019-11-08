@@ -69,19 +69,19 @@ load C3.txt
 clc, clear all, close all;
 
 coast_images = dir('image_processing\baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\coast*.jpg');
-%forest_images = dir('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\forest*.jpg');
-%street_images = dir('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\street*.jpg');
+%forest_images = dir('image_processing\baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\forest*.jpg');
+%street_images = dir('image_processing\baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\street*.jpg');
 
-% Détermination de la taille de l'échantillon de validation (et
-% complémentairement d'entrainement)
+% DÃ©termination de la taille de l'Ã©chantillon de validation (et
+% complÃ©mentairement d'entrainement)
 validation_set_size = round(size(coast_images,1)*0.20);
 
-% Création de l'échantillon d'entrainement
+% CrÃ©ation de l'Ã©chantillon d'entrainement
 coast_training_set = coast_images(1:end - validation_set_size, 1);
 %forest_training_set = forest_images(1:end - validation_set_size, 1);
 %street_training_set = street_images(1:end - validation_set_size, 1);
 
-% Création de l'échantillon de validation
+% CrÃ©ation de l'Ã©chantillon de validation
 coast_validation_set = coast_images(end-validation_set_size+1:end, 1);
 %forest_validation_set = forest_images(end-validation_set_size+1:end, 1);
 %street_validation_set = street_images(end-validation_set_size+1:end, 1);
