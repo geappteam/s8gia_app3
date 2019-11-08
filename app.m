@@ -152,7 +152,7 @@ title('E3 Parameter Histogram')
 hold off
 
 % E4
-figure(21)
+figure(24)
 nbins = 30;
 histogram(ref_P300(:,4),nbins)
 hold on
@@ -218,6 +218,7 @@ Co = [CoE11 CoE12 CoE13 CoE14 ; CoE21 CoE22 CoE23 CoE24; CoE31 CoE32 CoE33 CoE34
 coeffPCA_ref_P300 = pca(ref_P300,'Algorithm','eig','Rows','all')
 coeffPCA_ref_NP300 = pca(ref_NP300,'Algorithm','eig','Rows','all')
 
+%% Eigenvalues And Eigenvectors
 % Eigenvalues
 syms lenda
 eqn1 = det(Co - lenda * eye(size(Co))) == 0;
@@ -233,5 +234,7 @@ eigen_values = vpasolve(eqn1,lenda);
 %     eigen_vectors(:,i) = [S.a; S.b; S.c; S.d]'
 % end
 [eigen_vectors,Diag_eigen_values] = eig(Co);
+
+% Projection  proj(u)->v =(u*v/(||v||^2))*v
 
 
