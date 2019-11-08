@@ -1,5 +1,6 @@
 clc
 clear all
+close all
 %% LOAD DATA
 data_P300_path = 'Donnees8/ref_P300';
 data_NP300_path = 'Donnees8/ref_NP300';
@@ -14,10 +15,10 @@ avg_NP300 = sum(ref_NP300) ./ size(ref_NP300, 1);
 avg_set = sum(ref_set) ./ size(ref_set, 1);
 
 %% Covariance
-cov_set = cov(ref_set);
+cov_set = cov(ref_set)
 
 %% Eigenvalues and vectors
-[eig_vectors, eig_values] = eig(cov_set);
+[eig_vectors, eig_values] = eig(cov_set)
 
 %% Dimension reduction
 
@@ -30,8 +31,8 @@ unit_vectors = eig_vectors(max_values_index, :)';
 
 %% Transforming data
 
-t_P300 = (ref_P300 - avg_set) * unit_vectors;
-t_NP300 = (ref_NP300 - avg_set) * unit_vectors;
+t_P300 = (ref_P300) * unit_vectors;
+t_NP300 = (ref_NP300) * unit_vectors;
 
 figure()
 hold on
@@ -46,29 +47,35 @@ hold off
 % T1D1
 figure()
 nbins = 30;
-histogram(t_P300(:,1),nbins)
+h = histfit(t_P300(:,1),nbins);
+h(1).FaceAlpha = 0.5;
 hold on
-histogram(t_NP300(:,1),nbins)
-legend('P300','NP300')
+h = histfit(t_NP300(:,1),nbins);
+h(1).FaceAlpha = 0.5;
+legend('P300','' ,'NP300', '')
 title('T1D1 Parameter Histogram')
 hold off
 
 % T1D2
 figure()
 nbins = 30;
-histogram(t_P300(:,2),nbins)
+h = histfit(t_P300(:,2),nbins);
+h(1).FaceAlpha = 0.5;
 hold on
-histogram(t_NP300(:,2),nbins)
-legend('P300','NP300')
+h = histfit(t_NP300(:,2),nbins);
+h(1).FaceAlpha = 0.5;
+legend('P300','' ,'NP300', '')
 title('T1D2 Parameter Histogram')
 hold off
 
 % T1D3
 figure()
 nbins = 30;
-histogram(t_P300(:,3),nbins)
+h = histfit(t_P300(:,3),nbins);
+h(1).FaceAlpha = 0.5;
 hold on
-histogram(t_NP300(:,3),nbins)
-legend('P300','NP300')
+h = histfit(t_NP300(:,3),nbins);
+h(1).FaceAlpha = 0.5;
+legend('P300','' ,'NP300', '')
 title('T1D3 Parameter Histogram')
 hold off

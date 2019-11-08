@@ -13,10 +13,10 @@ avg_NP300 = sum(t_NP300) ./ size(t_NP300, 1);
 avg_set = sum(t_set) ./ size(t_set, 1);
 
 %% Covariance
-cov_set = cov(t_set);
+cov_set = cov(t_set)
 
 %% Eigenvalues and vectors
-[eig_vectors, eig_values] = eig(cov_set);
+[eig_vectors, eig_values] = eig(cov_set)
 
 %% Dimension reduction
 
@@ -24,20 +24,21 @@ cov_set = cov(t_set);
 dimension_count = 2;
 [~, max_values_index] = maxk(eig_values * ones(3,1), dimension_count);
 
-
+tt = unit_vectors * eig_vectors(max_values_index, :)'
 unit_vectors = eig_vectors(max_values_index, :)';
 
 %% Transforming data
 
-t_P300 = (t_P300 - avg_set) * unit_vectors;
-t_NP300 = (t_NP300 - avg_set) * unit_vectors;
+t_P300 = (t_P300) * unit_vectors;
+t_NP300 = (t_NP300) * unit_vectors;
 
 figure()
 hold on
 grid('on')
 title('Decorrelation 3 composantes')
-scatter(t_P300(:,1), t_P300(:,2), 'filled')
-scatter(t_NP300(:,1), t_NP300(:,2), 'filled')
+scatter(t_P300(:,1), t_P300(:,2))
+scatter(t_NP300(:,1), t_NP300(:,2), 'x')
+legend('P300', 'NP300')
 hold off
 
 
@@ -45,19 +46,23 @@ hold off
 % T2D1
 figure()
 nbins = 30;
-histogram(t_P300(:,1),nbins)
+h = histfit(t_P300(:,1),nbins);
+h(1).FaceAlpha = 0.5;
 hold on
-histogram(t_NP300(:,1),nbins)
-legend('P300','NP300')
+h = histfit(t_NP300(:,1),nbins);
+h(1).FaceAlpha = 0.5;
+legend('P300','' ,'NP300', '')
 title('T2D1 Parameter Histogram')
 hold off
 
 % T2D2
 figure()
 nbins = 30;
-histogram(t_P300(:,2),nbins)
+h = histfit(t_P300(:,2),nbins);
+h(1).FaceAlpha = 0.5;
 hold on
-histogram(t_NP300(:,2),nbins)
-legend('P300','NP300')
+h = histfit(t_NP300(:,2),nbins);
+h(1).FaceAlpha = 0.5;
+legend('P300','' ,'NP300', '')
 title('T2D2 Parameter Histogram')
 hold off
