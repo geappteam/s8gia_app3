@@ -65,32 +65,97 @@ load C2.txt
 load C3.txt
 
 
-%%
+%% Classification des images
 clc, clear all, close all;
-im = double(imread('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\coast_art294.jpg'));
 
-R = im(:,:,1);
-G = im(:,:,2);
-B = im(:,:,3);
+coast_images = dir('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\coast*.jpg');
+%forest_images = dir('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\forest*.jpg');
+%street_images = dir('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\street*.jpg');
 
-mean_R = mean(R, 'all');
-mean_G = mean(G, 'all');
-mean_B = mean(B, 'all');
+% Détermination de la taille de l'échantillon de validation (et
+% complémentairement d'entrainement)
+validation_set_size = round(size(coast_images,1)*0.20);
 
-covar_RR = sum((R - mean_R) .* (R - mean_R), 'all')/256^2-1;
-covar_RG = sum((R - mean_R) .* (G - mean_G), 'all')/256^2-1;
-covar_RB = sum((R - mean_R) .* (B - mean_B), 'all')/256^2-1;
+% Création de l'échantillon d'entrainement
+coast_training_set = coast_images(1:end - validation_set_size, 1);
+%forest_training_set = forest_images(1:end - validation_set_size, 1);
+%street_training_set = street_images(1:end - validation_set_size, 1);
 
-covar_GR = sum((G - mean_G) .* (R - mean_R), 'all')/256^2-1;
-covar_GG = sum((G - mean_G) .* (G - mean_G), 'all')/256^2-1;
-covar_GB = sum((G - mean_G) .* (B - mean_B), 'all')/256^2-1;
+% Création de l'échantillon de validation
+coast_validation_set = coast_images(end-validation_set_size+1:end, 1);
+%forest_validation_set = forest_images(end-validation_set_size+1:end, 1);
+%street_validation_set = street_images(end-validation_set_size+1:end, 1);
 
-covar_BR = sum((B - mean_B) .* (R - mean_R), 'all')/256^2-1;
-covar_BG = sum((B - mean_B) .* (G - mean_G), 'all')/256^2-1;
-covar_BB = sum((B - mean_B) .* (B - mean_B), 'all')/256^2-1;
+coast_vector_images = {size(coast_training_set, 1)};
+% coast_vector_images_R = zeros(1, size(coast_training_set, 1)*256^2);
+% coast_vector_images_G = zeros(1, size(coast_training_set, 1)*256^2);
+% coast_vector_images_B = zeros(1, size(coast_training_set, 1)*256^2);
+
+coast_vector_images_R = [];
+coast_vector_images_G = [];
+coast_vector_images_B = [];
+
+%for i=1:size(coast_training_set, 1)
+for i=1:1
+    im = double(imread(strcat('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\', coast_training_set(1).name)));
+    coast_vector_images{i} = reshape(im,1,256^2,3);
+    coast_vector_images_R = [coast_vector_images_R coast_vector_images{i}(1,:,1)];
+    coast_vector_images_G = [coast_vector_images_G coast_vector_images{i}(1,:,2)];
+    coast_vector_images_B = [coast_vector_images_B coast_vector_images{i}(1,:,3)];
+end
+
+mean_R = mean(coast_vector_images_R);
+mean_G = mean(coast_vector_images_G);
+mean_B = mean(coast_vector_images_B);
+
+norm_coast_vector_images_R = coast_vector_images_R - mean_R;
+norm_coast_vector_images_G = coast_vector_images_G - mean_G;
+norm_coast_vector_images_B = coast_vector_images_B - mean_B;
+
+covar_RR = sum((norm_coast_vector_images_R ) .* (norm_coast_vector_images_R ), 'all')/size(norm_coast_vector_images_R,2);
+covar_RG = sum((norm_coast_vector_images_R ) .* (norm_coast_vector_images_G), 'all')/size(norm_coast_vector_images_R,2);
+covar_RB = sum((norm_coast_vector_images_R ) .* (norm_coast_vector_images_B), 'all')/size(norm_coast_vector_images_R,2);
+
+covar_GR = sum((norm_coast_vector_images_G) .* (norm_coast_vector_images_R ), 'all')/size(norm_coast_vector_images_R,2);
+covar_GG = sum((norm_coast_vector_images_G) .* (norm_coast_vector_images_G), 'all')/size(norm_coast_vector_images_R,2);
+covar_GB = sum((norm_coast_vector_images_G) .* (norm_coast_vector_images_B), 'all')/size(norm_coast_vector_images_R,2);
+
+covar_BR = sum((norm_coast_vector_images_B) .* (norm_coast_vector_images_R ), 'all')/size(norm_coast_vector_images_R,2);
+covar_BG = sum((norm_coast_vector_images_B) .* (norm_coast_vector_images_G), 'all')/size(norm_coast_vector_images_R,2);
+covar_BB = sum((norm_coast_vector_images_B) .* (norm_coast_vector_images_B), 'all')/size(norm_coast_vector_images_R,2);
+
 
 covar_mat = [covar_RR covar_RG covar_RB; covar_GR covar_GG covar_GB; covar_BR covar_BG covar_BB];
 
-[eig_vals, eig_vec] = eig(covar_mat);
+[eig_vecs, eig_vals] = eig(covar_mat);
+
+[max_eig_val, col_of_max] = max(eig_vals,[],'all', 'linear');
+col_of_max = mod(col_of_max, size(eig_vals,1));
+
+if col_of_max == 0
+    col_of_max = 3;
+end
+
+log_max_eig_val = log10(max_eig_val);
+
+for i=1:size(eig_vals)
+    if  log10(max(eig_vals(:,i))) < log_max_eig_val - 2
+        eig_vecs(:,i) = [];
+    end
+end
+
+final_data = eig_vecs'*[norm_coast_vector_images_R;norm_coast_vector_images_G;norm_coast_vector_images_B];
+
+% forest_vector_images = {size(forest_training_set, 1)};
+% for i=1:size(forest_training_set, 1)
+%     im = double(imread(strcat('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\', forest_training_set(1).name)));
+%     forest_vector_images{i} = reshape(im,1,256^2,3);
+% end
+% 
+% street_vector_images = {size(street_training_set, 1)};
+% for i=1:size(street_training_set, 1)
+%     im = double(imread(strcat('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\', street_training_set(1).name)));
+%     street_vector_images{i} = reshape(im,1,256^2,3);
+% end
 
 disp(covar_mat);
