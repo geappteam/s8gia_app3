@@ -68,7 +68,7 @@ load C3.txt
 %% Classification des images
 clc, clear all, close all;
 
-coast_images = dir('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\coast*.jpg');
+coast_images = dir('image_processing\baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\coast*.jpg');
 %forest_images = dir('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\forest*.jpg');
 %street_images = dir('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\street*.jpg');
 
@@ -97,7 +97,7 @@ coast_vector_images_B = [];
 
 %for i=1:size(coast_training_set, 1)
 for i=1:1
-    im = double(imread(strcat('baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\', coast_training_set(1).name)));
+    im = double(imread(strcat('image_processing\baseDeDonneesImagesLabEtProblematique\baseDeDonneesImages\', coast_training_set(1).name)));
     coast_vector_images{i} = reshape(im,1,256^2,3);
     coast_vector_images_R = [coast_vector_images_R coast_vector_images{i}(1,:,1)];
     coast_vector_images_G = [coast_vector_images_G coast_vector_images{i}(1,:,2)];
